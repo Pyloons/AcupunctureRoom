@@ -1,0 +1,148 @@
+{% load static %}
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A.R.M.S. | 计时器</title>
+    <link rel="stylesheet" href="{% static '/css/master.css' %}">
+  </head>
+  <body>
+    <h1 id="clock">读取系统时间...</h1>
+    <form id="timer_form" action="{% url 'timer' %}" method="post">
+        {% csrf_token %}
+        <input name="form_bed" type="hidden" value="">
+        <input name="form_start" type="hidden" value="">
+        <input name="form_end" type="hidden" value="">
+        <input name="form_add1" type="hidden" value="">
+        <input name="form_mid" type="hidden" value="">
+        <input name="form_add2" type="hidden" value="">
+    </form>
+    <table id="operate-pad" border="1" cellspacing="0">
+      <thead>
+        <tr>
+          <th>床位</th>
+          <th>开始计时</th>
+          <th>开始时间</th>
+          <th>结束时间</th>
+          <th>电针加时</th>
+          <th>火罐结束时间</th>
+          <th>火罐加时</th>
+          <th>保存</th>
+          <th style="background:red;">慎重操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for bed_num in all %}
+        <tr id="bed{{ bed_num }}">
+          <th>{{ bed_num }}</th>
+          <td>
+            <button type="button" name="button1" onclick="setTreatLimit('{{ bed_num }}')">重新计时</button>
+          </td>
+
+          <td>{% if bed_num.start_time == None %}{% else %}{{ bed_num.start_time }}{% endif %}</td>
+
+          <td>{% if bed_num.end_time == None %}{% else %}{{ bed_num.end_time }}{% endif %}</td>
+
+          <td>
+            <input type="text" name="" value="{% if bed_num.middle_time == None %}{% else %}{{ bed_num.more_end_time }}{% endif %}">
+          </td>
+
+          <td>{% if bed_num.middle_time == None %}{% else %}{{ bed_num.middle_time }}{% endif %}</td>
+
+          <td>
+            <input type="text" name="" value="{% if bed_num.middle_time == None %}{% else %}{{ bed_num.more_middle_time }}{% endif %}">
+          </td>
+          <td>
+            <button type="button" name="btnMod{{ bed_num }}" onclick="update({{ bed_num }})">保存修改</button>
+          </td>
+          <td>
+            <button type="button" name="btnClr{{ bed_num }}" onclick="clear_content({{ bed_num }})">清除</button>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <script type="text/javascript" src="{% static '/js/master.js' %}"></script>
+    <script type="text/javascript">
+      window.onload = function() {
+        var theBeds = document.getElementById("operate-pad").children[1].children;
+        for(var i = 0; i < theBeds.length; i++) {
+          var load_info = theBeds[i].children
+          theBeds_value[i][0] = new Date(load_info[2].innerHTML);
+
+          theBeds_value[i][1] = new Date(load_info[3].innerHTML);
+          theBeds_value[i][2] = load_info[4].children[0].value;
+          theBeds_value[i][1].setMinutes(theBeds_value[i][1].getMinutes() + parseInt(theBeds_value[i][2]));
+          theBeds_value[i][2] = 0;
+
+          theBeds_value[i][3] = new Date(load_info[5].innerHTML);
+          theBeds_value[i][4] = load_info[6].children[0].value;
+          theBeds_value[i][3].setMinutes(theBeds_value[i][3].getMinutes() + parseInt(theBeds_value[i][4]));
+          theBeds_value[i][4] = 0;
+
+          for(var j = 0; j < 5;j++){
+            console.log(theBeds_value[i][j]);
+          }
+
+          var showBed = document.getElementById("bed"+(i+1)).children;
+          if(load_info[2].innerHTML != "") {
+            showBed[2].innerHTML = theBeds_value[i][0].toString().split(' ')[4];
+            showBed[3].innerHTML = theBeds_value[i][1].toString().split(' ')[4];
+            showBed[4].children[0].value = load_info[4].children[0].value;
+            showBed[5].innerHTML = theBeds_value[i][3].toString().split(' ')[4];
+            showBed[6].children[0].value = load_info[6].children[0].value;
+          }
+        }
+      }
+      function update(bedNum) {
+        var form_post = document.getElementById("timer_form");
+
+        var theBed = document.getElementById("bed" + bedNum).children;
+        timer_form.form_bed.value = parseInt(theBed[0].innerHTML);
+        timer_form.form_start.value = theBeds_value[parseInt(theBed[0].innerHTML)-1][0];
+        timer_form.form_end.value = theBeds_value[parseInt(theBed[0].innerHTML)-1][1];
+        timer_form.form_add1.value = theBed[4].children[0].value;
+        timer_form.form_mid.value = theBeds_value[parseInt(theBed[0].innerHTML)-1][3];
+        timer_form.form_add2.value = theBed[6].children[0].value;
+        form_post.submit();
+      }
+
+      function clear_content(bedNum) {
+        var form_post = document.getElementById("timer_form");
+
+        var theBed = document.getElementById("bed" + bedNum).children;
+
+        timer_form.form_bed.value = parseInt(theBed[0].innerHTML);
+        timer_form.form_start.value = "";
+        timer_form.form_end.value = "";
+        timer_form.form_add1.value = "";
+        timer_form.form_mid.value = "";
+        timer_form.form_add2.value = "";
+        console.log(form_post);
+        form_post.submit();
+      }
+
+      function setTreatLimit(bedNum) {
+        var myDate20 = new Date();
+        var myDate10 = new Date();
+        var theBed = document.getElementById("bed"+bedNum).children;
+        theBed[0].parentNode.style.background = "white";
+
+        var timeNow = myDate;
+        myDate20.setMinutes(myDate.getMinutes() + 20);
+        var time20 = myDate20;
+        myDate10.setMinutes(myDate.getMinutes() + 10);
+        var time10 = myDate10;
+
+        theBeds_value[parseInt(theBed[0].innerHTML)-1][0] = timeNow;
+        theBeds_value[parseInt(theBed[0].innerHTML)-1][1] = time20;
+        theBeds_value[parseInt(theBed[0].innerHTML)-1][3] = time10;
+        theBed[2].innerHTML = theBeds_value[parseInt(theBed[0].innerHTML)-1][0].toTimeString().split(' ')[0];
+        theBed[3].innerHTML = theBeds_value[parseInt(theBed[0].innerHTML)-1][1].toTimeString().split(' ')[0];
+        theBed[5].innerHTML = theBeds_value[parseInt(theBed[0].innerHTML)-1][3].toTimeString().split(' ')[0];
+
+        update(bedNum);
+      }
+    </script>
+  </body>
+</html>

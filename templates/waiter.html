@@ -1,0 +1,87 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A.R.M.S. | 排号</title>
+    <link rel="stylesheet" href="{% static '/css/master.css' %}">
+  </head>
+  <body>
+    <div class="left_pad">
+      <h2>已治疗到</h2>
+      <h1><strong>{{ maxTreat.number }}</strong></h1>
+      <form class="" action="{% url 'waiter' %}" method="post">{% csrf_token %}
+        <span>排号</span><input type="text" name="number" value="">
+        <span>姓名</span><input type="text" name="name" value="">
+        <input type="hidden" name="type" value="arrangement">
+        <input type="submit" name="" value="完成安排">
+      </form>
+      <h2>最大排号为</h2>
+      <h2><strong>{{ maxNum.number }}</strong></h2>
+    </div>
+    <div class="right_pad">
+      <h3>等待列表</h3>
+      <table>
+        <thead>
+          <th>排号</th>
+          <th>姓名</th>
+          <th>操作</th>
+        </thead>
+        <tbody>
+        {% for u in unTreat %}
+          <tr>
+            <td>{{ u.number }}</td>
+            <td>{{ u.name }}</td>
+            <td>
+              <input type="button" name="" value="已治疗" onclick="hasTreat({{ u.number }})">
+              <input type="button" name="" value="跳过" onclick="skipIt({{ u.number }})">
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="right_pad">
+      <h3>未到患者</h3>
+      <table>
+        <thead>
+          <th>排号</th>
+          <th>姓名</th>
+          <th>操作</th>
+        </thead>
+        <tbody>
+        {% for u in skiped %}
+          <tr>
+            <td>{{ u.number }}</td>
+            <td>{{ u.name }}</td>
+            <td>
+              <input type="button" name="" value="已治疗" onclick="hasTreat({{ u.number }}, '{{ u.name }}')">
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <form id="treat" action="{% url 'waiter' %}" method="post">{% csrf_token %}
+        <input type="hidden" name="type" value="treat">
+        <input type="hidden" name="number" value="">
+        <input type="hidden" name="name" value="">
+      </form>
+      <form id="skip" action="{% url 'waiter' %}" method="post">{% csrf_token %}
+        <input type="hidden" name="type" value="skip">
+        <input type="hidden" name="number" value="">
+      </form>
+    </div>
+    <script type="text/javascript">
+      function hasTreat(num, name) {
+        var postMessage = document.getElementById('treat');
+        treat.number.value = num;
+        treat.name.value = name;
+        postMessage.submit();
+      }
+      function skipIt(num) {
+        var postMessage = document.getElementById('skip');
+        skip.number.value = num;
+        postMessage.submit();
+      }
+    </script>
+  </body>
+</html>

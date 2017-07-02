@@ -1,0 +1,19 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A.R.M.S. | 查询结果</title>
+  </head>
+  <body>
+    <div id="search_pad">
+      <h2>查询结果</h2>
+      <ul>
+        {% for log in result %}
+        <li>
+          {% if log.type == 'dj' %}<strong>{% endif %}{{ log.date }} {{ log.name }}{% if log.type == 'dj' %} {{ log.times }}次</strong>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </body>
+</html>

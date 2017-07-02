@@ -1,0 +1,22 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>A.R.M.S.</title>
+    <link rel="stylesheet" href="{% static '/css/master.css' %}">
+  </head>
+  <body>
+    <div style="width:800px;margin: 0 auto;">
+      <h1>A.R.M.S.</h1>
+      <h2>针灸室管理系统</h2>
+      <h3>Acupuncture Room Manage System</h3>
+
+        <ul id="homeCtrl">
+            <li><a href="{% url 'register' %}"><h2>登记</h2></a></li>
+            <li><a href="{% url 'waiter' %}"><h2>排号</h2></a></li>
+            <li><a href="{% url 'searcher' %}"><h2>查找</h2></a></li>
+            <li><a href="{% url 'timer' %}"><h2>计时</h2></a></li>
+        </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+body {
+  text-align: center;
+}
+
+h1 {
+  font-size: 150px;
+  margin: 0;
+  padding: 0;
+}
+
+thead {
+  background: blue;
+  color: white;
+}
+
+td, th {
+  padding: 0 10px;
+}
+
+.bed:hover {
+  background: yellow;
+}
+
+#operate-pad {
+  text-align: center;
+  width: auto;
+  margin: 0 auto;
+  font-size: 25px;
+}
+
+#regist_pad {
+  text-align: center;
+  width: auto;
+  margin: 0 auto;
+  font-size: 25px;
+  display: inline-block;
+  width: 600px;
+}
+
+#search_pad {
+  text-align: center;
+  width: auto;
+  margin: 0 auto;
+  font-size: 25px;
+  display: inline-block;
+  width: 300px;
+}
+
+#search_pad ul {
+  text-align: left;
+}
+
+.left_pad {
+  width: 600px;
+  float: left;
+}
+
+.right_pad {
+  text-align: left;
+  display: inline-block;
+  width: 300px;
+  float: right;
+}
+
+#homeCtrl {
+  text-align: center;
+}
+
+#homeCtrl li{
+  display: inline-block;
+}
