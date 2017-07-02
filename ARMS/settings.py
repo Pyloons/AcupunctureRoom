@@ -80,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ARMSDB',
-        'USER': 'root',
-        'PASSWORD': 'nhVMozDusI4g7IQu',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',
     }
 }
