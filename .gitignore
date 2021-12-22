@@ -86,7 +86,6 @@ celerybeat-schedule
 .venv
 venv/
 ENV/
-arms-env/
 
 # Spyder project settings
 .spyderproject
@@ -103,3 +102,4 @@ arms-env/
 
 # normal
 db.sqlite3
+.idea/
