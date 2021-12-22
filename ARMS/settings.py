@@ -78,6 +78,10 @@ WSGI_APPLICATION = 'ARMS.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
+    },
+    'old_mysql': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ARMSDB',
         'USER': '',
@@ -86,6 +90,7 @@ DATABASES = {
     }
 }
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

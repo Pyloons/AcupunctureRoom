@@ -5,4 +5,5 @@ from django.apps import AppConfig
 
 
 class TimerConfig(AppConfig):
-    name = u'计时器'
+    name = 'timer'
+    verbose_name = "计时器"
